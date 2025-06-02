@@ -1,0 +1,48 @@
+name: Keep Services Alive
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: 
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Ping Realtime Chat Client (React)
+      run: |
+        curl -s "${{ secrets.REALTIME_CHAT_CLIENT_URL }}"
+      continue-on-error: true
+      
+    - name: Ping Realtime Chat Server (Django)
+      run: |
+        curl -s "${{ secrets.REALTIME_CHAT_SERVER_URL }}"
+      continue-on-error: true
+      
+    - name: Ping Workforce Client (React)
+      run: |
+        curl -s "${{ secrets.WORKFORCE_CLIENT_URL }}"
+      continue-on-error: true
+      
+    - name: Ping Workforce Server (Spring)
+      run: |
+        curl -s "${{ secrets.EMPLOYEE_MANAGEMENT_URL }}"
+      continue-on-error: true
+      
+    - name: Ping Loan Risk Analysis Server (Spring)
+      run: |
+        curl -s "${{ secrets.LOAN_RISK_ANALYSIS_URL }}"
+      continue-on-error: true
+      
+    - name: Ping Book Management Server (Spring)
+      run: |
+        curl -s "${{ secrets.BOOK_MANAGEMENT_URL }}"
+      continue-on-error: true
+      
+
+      
+    - name: Log Status
+      run: |
+        echo "Keepalive completed at $(date)"
+
